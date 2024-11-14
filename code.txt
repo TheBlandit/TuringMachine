@@ -1,0 +1,21 @@
+# Starting Tape
+000010100100100001
+# Starting Position
+3
+# Starting State
+s0
+# HALT
+halt
+0>halt
+0>halt
+0>halt
+# State s0
+s0
+0<s0
+1<s0
+_>s1
+# State s1
+s1
+1>s1
+0>s1
+_>halt
