@@ -1,13 +1,13 @@
 mod reader;
-mod tape;
 mod state;
+mod tape;
 
-use tape::{Tape, TapeElement};
 use reader::Reader;
-use state::{State, StateTransition, StateContainer};
+use state::{State, StateContainer, StateTransition};
+use tape::{Tape, TapeElement};
 
 // Starting state is the first state
-// Ignore lines that start with # 
+// Ignore lines that start with #
 // File in format
 // Initial tape
 // Tape position
@@ -55,7 +55,8 @@ fn main() {
 
     while let Some(state_name) = reader.next() {
         let cloned = state_name.clone();
-        let state = State::new(&mut reader, state_name, &mut state_container).expect(&format!("Error in creating state: {cloned}"));
+        let state = State::new(&mut reader, state_name, &mut state_container)
+            .expect(&format!("Error in creating state: {cloned}"));
         states.push(state);
     }
 
@@ -72,22 +73,21 @@ fn main() {
     crossterm::terminal::enable_raw_mode().expect("Failed to enable raw mode");
 
     'run: loop {
-        for _ in 0..10 {
+        for _ in 0..1 {
             if tape.print(&mut stdout).expect("Io failure") {
                 break 'run;
             }
 
-            std::thread::sleep(std::time::Duration::from_millis(100));
+            std::thread::sleep(std::time::Duration::from_millis(1000));
         }
-
 
         let cell = tape.get();
         let transition = states[current_state_index].get_transition(cell);
-        
+
         let StateTransition {
             direction,
             set,
-            state
+            state,
         } = transition;
 
         current_state_index = state;
