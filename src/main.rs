@@ -73,13 +73,11 @@ fn main() {
     crossterm::terminal::enable_raw_mode().expect("Failed to enable raw mode");
 
     'run: loop {
-        for _ in 0..1 {
-            if tape.print(&mut stdout).expect("Io failure") {
-                break 'run;
-            }
-
-            std::thread::sleep(std::time::Duration::from_millis(1000));
+        if tape.print(&mut stdout).expect("Io failure") {
+            break 'run;
         }
+
+        std::thread::sleep(std::time::Duration::from_millis(500));
 
         let cell = tape.get();
         let transition = states[current_state_index].get_transition(cell);
